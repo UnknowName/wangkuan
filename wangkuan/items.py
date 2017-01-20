@@ -17,6 +17,7 @@ class WangkuanItem(scrapy.Item):
     content_email = scrapy.Field() #联系人Email
     company_org_code = scrapy.Field() #组织机构代码编号
     org_enddate = scrapy.Field() #组织机构代码到期日期
+    capital = scrapy.Field()#注册资本
 
 
 class UrlItem(scrapy.Item):
