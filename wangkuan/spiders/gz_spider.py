@@ -10,7 +10,7 @@ import json
 import time
 
 
-page = 1
+PAGE = 1
 page_lock = Lock()
 
 
@@ -34,16 +34,14 @@ class BdSpider(scrapy.Spider):
     }
     s = requests.Session()
     def start_requests(self):
-        global page,page_lock
+        global PAGE
         resp = self.s.post(
             self.post_url,data=self.post_data,
             headers=settings.DEFAULT_REQUEST_HEADERS
         )
         req_data = json.loads(resp.content)
         total_page = req_data.get('total',None)
-        print total_page
-        #total_page = 3
-        while page < total_page :
+        while PAGE < total_page :
             time.sleep(10)
             resp = self.s.post(
                 self.post_url,data=self.post_data,
@@ -52,12 +50,9 @@ class BdSpider(scrapy.Spider):
             req_data = json.loads(resp.content)
             req_status = req_data.get('success',False)
             if req_status:
-                try:
-                    page_lock.acquire()
-                    page += 1
-                finally:
-                    page_lock.release()
-                self.post_data['PAGE'] = page
+                with page_lock:
+                    PAGE += 1
+                self.post_data['PAGE'] = PAGE
                 comp_data = req_data['data']
                 for data in comp_data:
                     ent_id = str(data['enterpriseId'])
