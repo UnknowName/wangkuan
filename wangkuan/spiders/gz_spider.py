@@ -14,7 +14,7 @@ PAGE = 1
 page_lock = Lock()
 
 
-class BdSpider(scrapy.Spider):
+class GzSpider(scrapy.Spider):
     name = 'gz'
     base_url = 'http://202.104.65.182:8081/G2/webdrive/web-enterprise!view.do?enterpriseId='
     post_url = ('http://202.104.65.182:8081/G2/gfmweb/web-enterprise!list.do?data'
